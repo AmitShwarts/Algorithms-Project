@@ -1,9 +1,10 @@
 #pragma once
-#include "../configs.h"
+#include "../../configs.h"
+#include "Graph.h"
 
 namespace GraphByMat
 {
-  class WeightedGraph
+  class WeightedGraph : public Graph
   {
 	private:
 	  int m_Size;
@@ -14,14 +15,15 @@ namespace GraphByMat
 	  WeightedGraph(int i_Size);
 	  WeightedGraph() = delete;
 	  WeightedGraph(const WeightedGraph &org);
-	  ~WeightedGraph();
+	  virtual ~WeightedGraph();
 	  const WeightedGraph &operator=(const WeightedGraph &org);
 	  //
 	  // Methods
 	  static WeightedGraph MakeEmptyGraph(int i_Size);
-	  bool IsAdjacent(int i_U, int i_V){ return m_AdjMat[i_U][i_V] != MAX_WEIGHT; }
-	  AdjacentList GetAdjList(int i_U);
-	  void AddEdge(int i_U, int i_V, int i_Weight);
-	  void RemoveEdge(int i_U, int i_V);
+	  virtual bool IsAdjacent(int i_U, int i_V);
+	  virtual AdjacentList GetAdjList(int i_U);
+	  virtual void AddEdge(int i_U, int i_V, int i_Weight = MAX_WEIGHT);
+	  virtual void RemoveEdge(int i_U, int i_V);
+	  virtual int GetSize(){ return m_Size; }
   };
 }

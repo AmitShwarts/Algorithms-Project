@@ -4,10 +4,9 @@ using namespace GraphByMat;
 
 WeightedGraph::WeightedGraph(int i_Size)
 {
-	
 	if(i_Size <= 0)
 	{
-		throw "Invalid.";
+		throw std::invalid_argument(Error::CONSTRUCTOR_INPUT_NON_POSITIVE);
 	}
 	
 	m_Size = i_Size;
@@ -25,7 +24,6 @@ WeightedGraph::WeightedGraph(int i_Size)
 }
 WeightedGraph::~WeightedGraph()
 {
-	
 	for(int i = 0; i < m_Size; i++)
 	{
 		delete[] m_AdjMat[i];
@@ -35,10 +33,9 @@ WeightedGraph::~WeightedGraph()
 }
 AdjacentList WeightedGraph::GetAdjList(int i_U)
 {
-	
 	if(!isValidVertex(i_U))
 	{
-		throw "Invalid.";
+		throw std::out_of_range(Error::OUT_OF_RANGE_VERTEX_INDEX);
 	}
 	
 	AdjacentList resultList;
@@ -53,9 +50,9 @@ AdjacentList WeightedGraph::GetAdjList(int i_U)
 void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
 {
 	
-	if(!isValidVertex(i_U) || !isValidVertex(i_V) || m_AdjMat[i_U - 1][i_V - 1] != MAX_WEIGHT)
+	if(!isValidVertex(i_U) || !isValidVertex(i_V))
 	{
-		throw "Invalid";
+		throw std::out_of_range(Error::OUT_OF_RANGE_VERTEX_INDEX);
 	}
 	
 	m_AdjMat[i_U - 1][i_V - 1] = i_Weight;
@@ -63,38 +60,37 @@ void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
 void WeightedGraph::RemoveEdge(int i_U, int i_V)
 {
 	
-	if(!isValidVertex(i_U) || !isValidVertex(i_V) || m_AdjMat[i_U - 1][i_V - 1] == MAX_WEIGHT)
+	if(!isValidVertex(i_U) || !isValidVertex(i_V))
 	{
-		throw "Invalid";
+		throw std::out_of_range(Error::OUT_OF_RANGE_VERTEX_INDEX);
 	}
 	
 	m_AdjMat[i_U - 1][i_V - 1] = MAX_WEIGHT;
 }
 WeightedGraph WeightedGraph::MakeEmptyGraph(int i_Size)
 {
-	
 	return WeightedGraph(i_Size);
 }
 WeightedGraph::WeightedGraph(const WeightedGraph &org)
 {
 	
-	if(this != &org)
-	{
-		*this = org;
-	}
+	m_Size = 0;
+	*this = org;
 }
 const WeightedGraph &WeightedGraph::operator=(const WeightedGraph &org)
 {
-	
 	if(this != &org)
 	{
 		// delete old data
-		for(int i = 0; i < m_Size; i++)
+		if(m_Size > 0)
 		{
-			delete[] m_AdjMat[i];
+			for(int i = 0; i < m_Size; i++)
+			{
+				delete[] m_AdjMat[i];
+			}
+			
+			delete[] m_AdjMat;
 		}
-		
-		delete[] m_AdjMat;
 		
 		// copy data
 		m_Size = org.m_Size;
@@ -112,4 +108,14 @@ const WeightedGraph &WeightedGraph::operator=(const WeightedGraph &org)
 	}
 	
 	return *this;
+}
+bool WeightedGraph::IsAdjacent(int i_U, int i_V)
+{
+	
+	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))
+	{
+		throw std::out_of_range(Error::OUT_OF_RANGE_VERTEX_INDEX);
+	}
+	
+	return m_AdjMat[i_U - 1][i_V - 1] != MAX_WEIGHT;
 }
