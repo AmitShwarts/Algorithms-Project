@@ -1,11 +1,5 @@
 #pragma once
-#include <iostream>
-
-struct ListNode
-{
-	int vertex, weight;
-	ListNode *next, *prev;
-};
+#include "../configs.h"
 
 class AdjacentList
 {

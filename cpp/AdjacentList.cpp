@@ -2,7 +2,6 @@
 
 AdjacentList::~AdjacentList()
 {
-	
 	ListNode *currentNode = m_Head;
 	
 	while(currentNode != nullptr)
@@ -15,7 +14,6 @@ AdjacentList::~AdjacentList()
 }
 ListNode *AdjacentList::makeNewNode(int i_Vertex, int i_Weight, ListNode *io_Next)
 {
-	
 	ListNode *newNode = new ListNode;
 	
 	newNode->vertex = i_Vertex;
@@ -27,7 +25,6 @@ ListNode *AdjacentList::makeNewNode(int i_Vertex, int i_Weight, ListNode *io_Nex
 }
 void AdjacentList::ToHead(int i_Vertex, int i_Weight)
 {
-	
 	ListNode *newHead = this->makeNewNode(i_Vertex, i_Weight, m_Head);
 	
 	if(this->IsEmpty())
@@ -44,7 +41,6 @@ void AdjacentList::ToHead(int i_Vertex, int i_Weight)
 }
 void AdjacentList::ToTail(int i_Vertex, int i_Weight)
 {
-	
 	ListNode *newTail = this->makeNewNode(i_Vertex, i_Weight);
 	
 	newTail->prev = m_Tail;
@@ -62,7 +58,6 @@ void AdjacentList::ToTail(int i_Vertex, int i_Weight)
 }
 void AdjacentList::DeleteFromHead()
 {
-	
 	if(this->IsEmpty())
 	{
 		throw "Invalid";
@@ -86,7 +81,6 @@ void AdjacentList::DeleteFromHead()
 }
 void AdjacentList::DeleteFromTail()
 {
-	
 	if(this->IsEmpty())
 	{
 		throw "Invalid";
@@ -110,7 +104,6 @@ void AdjacentList::DeleteFromTail()
 }
 AdjacentList::AdjacentList(const AdjacentList &org)
 {
-	
 	if(this != &org)
 	{
 		*this = org;
@@ -118,7 +111,6 @@ AdjacentList::AdjacentList(const AdjacentList &org)
 }
 const AdjacentList &AdjacentList::operator=(const AdjacentList &org)
 {
-	
 	if(this != &org)
 	{
 		// delete old data
@@ -145,7 +137,6 @@ const AdjacentList &AdjacentList::operator=(const AdjacentList &org)
 }
 const ListNode *AdjacentList::Find(int i_U)
 {
-	
 	ListNode *currentNode = m_Head;
 	
 	while(currentNode != nullptr)
@@ -160,7 +151,6 @@ const ListNode *AdjacentList::Find(int i_U)
 }
 void AdjacentList::DeleteVertex(int i_Vertex)
 {
-	
 	ListNode *currentNode = m_Head;
 	
 	while(currentNode != nullptr && currentNode->vertex != i_Vertex)

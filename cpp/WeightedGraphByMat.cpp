@@ -1,8 +1,8 @@
 #include "../header/WeightedGraphByMat.h"
 
-using namespace DataStructure1;
+using namespace GraphByMat;
 
-WeightedGraphByMat::WeightedGraphByMat(int i_Size)
+WeightedGraph::WeightedGraph(int i_Size)
 {
 	
 	if(i_Size <= 0)
@@ -19,11 +19,11 @@ WeightedGraphByMat::WeightedGraphByMat(int i_Size)
 		
 		for(int j = 0; j < m_Size; j++)
 		{
-			m_AdjMat[i][j] = r_MaxWeight;
+			m_AdjMat[i][j] = MAX_WEIGHT;
 		}
 	}
 }
-WeightedGraphByMat::~WeightedGraphByMat()
+WeightedGraph::~WeightedGraph()
 {
 	
 	for(int i = 0; i < m_Size; i++)
@@ -33,7 +33,7 @@ WeightedGraphByMat::~WeightedGraphByMat()
 	
 	delete[] m_AdjMat;
 }
-AdjacentList WeightedGraphByMat::GetAdjList(int i_U)
+AdjacentList WeightedGraph::GetAdjList(int i_U)
 {
 	
 	if(!isValidVertex(i_U))
@@ -50,32 +50,32 @@ AdjacentList WeightedGraphByMat::GetAdjList(int i_U)
 	
 	return resultList;
 }
-void WeightedGraphByMat::AddEdge(int i_U, int i_V, int i_Weight)
+void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
 {
 	
-	if(!isValidVertex(i_U) || !isValidVertex(i_V) || m_AdjMat[i_U - 1][i_V - 1] != r_MaxWeight)
+	if(!isValidVertex(i_U) || !isValidVertex(i_V) || m_AdjMat[i_U - 1][i_V - 1] != MAX_WEIGHT)
 	{
 		throw "Invalid";
 	}
 	
 	m_AdjMat[i_U - 1][i_V - 1] = i_Weight;
 }
-void WeightedGraphByMat::RemoveEdge(int i_U, int i_V)
+void WeightedGraph::RemoveEdge(int i_U, int i_V)
 {
 	
-	if(!isValidVertex(i_U) || !isValidVertex(i_V) || m_AdjMat[i_U - 1][i_V - 1] == r_MaxWeight)
+	if(!isValidVertex(i_U) || !isValidVertex(i_V) || m_AdjMat[i_U - 1][i_V - 1] == MAX_WEIGHT)
 	{
 		throw "Invalid";
 	}
 	
-	m_AdjMat[i_U - 1][i_V - 1] = r_MaxWeight;
+	m_AdjMat[i_U - 1][i_V - 1] = MAX_WEIGHT;
 }
-WeightedGraphByMat WeightedGraphByMat::MakeEmptyGraph(int i_Size)
+WeightedGraph WeightedGraph::MakeEmptyGraph(int i_Size)
 {
 	
-	return WeightedGraphByMat(i_Size);
+	return WeightedGraph(i_Size);
 }
-WeightedGraphByMat::WeightedGraphByMat(const WeightedGraphByMat &org)
+WeightedGraph::WeightedGraph(const WeightedGraph &org)
 {
 	
 	if(this != &org)
@@ -83,7 +83,7 @@ WeightedGraphByMat::WeightedGraphByMat(const WeightedGraphByMat &org)
 		*this = org;
 	}
 }
-const WeightedGraphByMat &WeightedGraphByMat::operator=(const WeightedGraphByMat &org)
+const WeightedGraph &WeightedGraph::operator=(const WeightedGraph &org)
 {
 	
 	if(this != &org)

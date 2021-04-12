@@ -1,7 +1,7 @@
 #include "../header/WeightedGraphByLists.h"
 
-using namespace DataStructure2;
-WeightedGraphByLists::WeightedGraphByLists(int i_Size)
+using namespace GraphByLists;
+WeightedGraph::WeightedGraph(int i_Size)
 {
 	
 	if(i_Size <= 0)
@@ -12,17 +12,17 @@ WeightedGraphByLists::WeightedGraphByLists(int i_Size)
 	m_Size = i_Size;
 	m_Vertices = new AdjacentList[m_Size];
 }
-WeightedGraphByLists::~WeightedGraphByLists()
+WeightedGraph::~WeightedGraph()
 {
 	
 	delete[] m_Vertices;
 }
-WeightedGraphByLists WeightedGraphByLists::MakeEmptyGraph(int i_Size)
+WeightedGraph WeightedGraph::MakeEmptyGraph(int i_Size)
 {
 	
-	return WeightedGraphByLists(i_Size);
+	return WeightedGraph(i_Size);
 }
-WeightedGraphByLists::WeightedGraphByLists(const WeightedGraphByLists &org)
+WeightedGraph::WeightedGraph(const WeightedGraph &org)
 {
 	
 	if(this != &org)
@@ -30,7 +30,7 @@ WeightedGraphByLists::WeightedGraphByLists(const WeightedGraphByLists &org)
 		*this = org;
 	}
 }
-const WeightedGraphByLists &WeightedGraphByLists::operator=(const WeightedGraphByLists &org)
+const WeightedGraph &WeightedGraph::operator=(const WeightedGraph &org)
 {
 	
 	if(this != &org)
@@ -50,7 +50,7 @@ const WeightedGraphByLists &WeightedGraphByLists::operator=(const WeightedGraphB
 	
 	return *this;
 }
-bool WeightedGraphByLists::IsAdjacent(int i_U, int i_V)
+bool WeightedGraph::IsAdjacent(int i_U, int i_V)
 {
 	
 	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))
@@ -60,7 +60,7 @@ bool WeightedGraphByLists::IsAdjacent(int i_U, int i_V)
 	
 	return m_Vertices[i_U - 1].Find(i_V) != nullptr;
 }
-AdjacentList WeightedGraphByLists::GetAdjList(int i_U)
+AdjacentList WeightedGraph::GetAdjList(int i_U)
 {
 	
 	if(!this->isValidVertex(i_U))
@@ -70,7 +70,7 @@ AdjacentList WeightedGraphByLists::GetAdjList(int i_U)
 	
 	return m_Vertices[i_U - 1];
 }
-void WeightedGraphByLists::AddEdge(int i_U, int i_V, int i_Weight)
+void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
 {
 	
 	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))
@@ -80,7 +80,7 @@ void WeightedGraphByLists::AddEdge(int i_U, int i_V, int i_Weight)
 	
 	m_Vertices[i_U - 1].ToTail(i_V, i_Weight);
 }
-void WeightedGraphByLists::RemoveEdge(int i_U, int i_V)
+void WeightedGraph::RemoveEdge(int i_U, int i_V)
 {
 	
 	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))

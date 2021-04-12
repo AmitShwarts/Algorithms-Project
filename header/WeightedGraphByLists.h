@@ -1,10 +1,9 @@
 #pragma once
-#include <iostream>
-#include "AdjacentList.h"
+#include "../configs.h"
 
-namespace DataStructure2
+namespace GraphByLists
 {
-  class WeightedGraphByLists
+  class WeightedGraph
   {
 	private:
 	  int m_Size;
@@ -12,14 +11,14 @@ namespace DataStructure2
 	  bool isValidVertex(int i_U){ return i_U > 0 && i_U <= m_Size; }
 	
 	public:
-	  WeightedGraphByLists(int i_Size);
-	  WeightedGraphByLists() = delete;
-	  WeightedGraphByLists(const WeightedGraphByLists &org);
-	  ~WeightedGraphByLists();
-	  const WeightedGraphByLists &operator=(const WeightedGraphByLists &org);
+	  WeightedGraph(int i_Size);
+	  WeightedGraph() = delete;
+	  WeightedGraph(const WeightedGraph &org);
+	  ~WeightedGraph();
+	  const WeightedGraph &operator=(const WeightedGraph &org);
 	  //
 	  // Methods
-	  static WeightedGraphByLists MakeEmptyGraph(int i_Size);
+	  static WeightedGraph MakeEmptyGraph(int i_Size);
 	  bool IsAdjacent(int i_U, int i_V);
 	  AdjacentList GetAdjList(int i_U);
 	  void AddEdge(int i_U, int i_V, int i_Weight);
