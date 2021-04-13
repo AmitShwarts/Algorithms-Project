@@ -47,7 +47,7 @@ const WeightedGraph &WeightedGraph::operator=(const WeightedGraph &org)
 	
 	return *this;
 }
-bool WeightedGraph::IsAdjacent(int i_U, int i_V)
+bool WeightedGraph::IsAdjacent(int i_U, int i_V) const
 {
 	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))
 	{
@@ -56,7 +56,7 @@ bool WeightedGraph::IsAdjacent(int i_U, int i_V)
 	
 	return m_Vertices[i_U - 1].Find(i_V) != nullptr;
 }
-AdjacentList WeightedGraph::GetAdjList(int i_U)
+AdjacentList WeightedGraph::GetAdjList(int i_U) const
 {
 	if(!this->isValidVertex(i_U))
 	{

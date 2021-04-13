@@ -2,15 +2,7 @@
 
 AdjacentList::~AdjacentList()
 {
-	ListNode *currentNode = m_Head;
-	
-	while(currentNode != nullptr)
-	{
-		ListNode *tempNode = currentNode;
-		
-		currentNode = currentNode->next;
-		delete tempNode;
-	}
+	this->clear();
 }
 ListNode *AdjacentList::makeNewNode(int i_Vertex, int i_Weight, ListNode *io_Next)
 {
@@ -104,33 +96,17 @@ void AdjacentList::DeleteFromTail()
 }
 AdjacentList::AdjacentList(const AdjacentList &org)
 {
-	if(this != &org)
-	{
-		*this = org;
-	}
+	m_Size = 0;
+	m_Head = m_Tail = nullptr;
+	
+	this->AppendList(org);
 }
 const AdjacentList &AdjacentList::operator=(const AdjacentList &org)
 {
 	if(this != &org)
 	{
-		// delete old data
-		ListNode *currentNode = m_Head;
-		
-		while(currentNode != nullptr)
-		{
-			ListNode *tempNode = currentNode;
-			
-			currentNode = currentNode->next;
-			delete tempNode;
-		}
-		
-		// copy data
-		currentNode = org.m_Head;
-		while(currentNode != nullptr)
-		{
-			this->ToTail(currentNode->vertex, currentNode->weight);
-			currentNode = currentNode->next;
-		}
+		this->clear();
+		this->AppendList(org);
 	}
 	
 	return *this;
@@ -172,5 +148,42 @@ void AdjacentList::DeleteVertex(int i_Vertex)
 		currentNode->next->prev = currentNode->prev;
 		delete currentNode;
 		m_Size--;
+	}
+}
+ListNode *AdjacentList::findByIndex(int i_Index) const
+{
+	if(i_Index < m_Size)
+	{
+		throw std::out_of_range(Error::OUT_OF_RANGE_VERTEX_INDEX);
+	}
+	
+	ListNode *currentNode = m_Head;
+	
+	for(int i = 0; i < i_Index; i++)
+	{
+		currentNode = currentNode->next;
+	}
+	
+	return currentNode;
+}
+void AdjacentList::clear()
+{
+	ListNode *currentNode = m_Head;
+	
+	while(currentNode != nullptr)
+	{
+		ListNode *tempNode = currentNode;
+		
+		currentNode = currentNode->next;
+		delete tempNode;
+	}
+}
+void AdjacentList::AppendList(const AdjacentList &i_List)
+{
+	ListNode *currentNode = i_List.m_Head;
+	while(currentNode != nullptr)
+	{
+		this->ToTail(currentNode->vertex, currentNode->weight);
+		currentNode = currentNode->next;
 	}
 }

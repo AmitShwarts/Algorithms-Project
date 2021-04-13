@@ -9,8 +9,8 @@ namespace GraphByLists
 	private:
 	  int m_Size;
 	  AdjacentList *m_Vertices;
-	  bool isValidVertex(int i_U){ return i_U > 0 && i_U <= m_Size; }
-	
+	  bool isValidVertex(int i_U) const{ return i_U > 0 && i_U <= m_Size; }
+  
 	public:
 	  WeightedGraph(int i_Size);
 	  WeightedGraph() = delete;
@@ -20,10 +20,10 @@ namespace GraphByLists
 	  //
 	  // Methods
 	  static WeightedGraph MakeEmptyGraph(int i_Size);
-	  virtual bool IsAdjacent(int i_U, int i_V);
-	  virtual AdjacentList GetAdjList(int i_U);
+	  virtual bool IsAdjacent(int i_U, int i_V) const;
+	  virtual AdjacentList GetAdjList(int i_U) const;
 	  virtual void AddEdge(int i_U, int i_V, int i_Weight);
 	  virtual void RemoveEdge(int i_U, int i_V);
-	  virtual int GetSize(){ return m_Size; }
+	  virtual int GetSize() const{ return m_Size; }
   };
 }

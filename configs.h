@@ -13,4 +13,5 @@ namespace Error
 {
   const std::string CONSTRUCTOR_INPUT_NON_POSITIVE = "Size must be positive int";
   const std::string OUT_OF_RANGE_VERTEX_INDEX = "Invalid vertex index";
+  const std::string OUT_OF_RANGE = "Out of range";
 }
