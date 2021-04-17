@@ -2,7 +2,7 @@
 
 AdjacentList::~AdjacentList()
 {
-	this->clear();
+	this->freeList();
 }
 ListNode *AdjacentList::makeNewNode(int i_Vertex, int i_Weight, ListNode *io_Next)
 {
@@ -52,7 +52,7 @@ void AdjacentList::DeleteFromHead()
 {
 	if(this->IsEmpty())
 	{
-		throw "Invalid";
+		throw ERROR_EMPTY_LIST;
 	}
 	
 	if(m_Size == 1)
@@ -75,7 +75,7 @@ void AdjacentList::DeleteFromTail()
 {
 	if(this->IsEmpty())
 	{
-		throw "Invalid";
+		throw ERROR_EMPTY_LIST;
 	}
 	
 	if(m_Size == 1)
@@ -105,7 +105,7 @@ const AdjacentList &AdjacentList::operator=(const AdjacentList &org)
 {
 	if(this != &org)
 	{
-		this->clear();
+		this->freeList();
 		this->AppendList(org);
 	}
 	
@@ -150,23 +150,25 @@ void AdjacentList::DeleteVertex(int i_Vertex)
 		m_Size--;
 	}
 }
-ListNode *AdjacentList::findByIndex(int i_Index) const
+
+ListNode *AdjacentList::findByIndex(int i_VertexIndex) const
 {
-	if(i_Index < m_Size)
+	if(i_VertexIndex < m_Size)
 	{
-		throw std::out_of_range(Error::OUT_OF_RANGE_VERTEX_INDEX);
+		throw std::out_of_range(ERROR_OUT_OF_RANGE_VERTEX_INDEX);
 	}
 	
 	ListNode *currentNode = m_Head;
 	
-	for(int i = 0; i < i_Index; i++)
+	for(int i = 0; i < i_VertexIndex; i++)
 	{
 		currentNode = currentNode->next;
 	}
 	
 	return currentNode;
 }
-void AdjacentList::clear()
+
+void AdjacentList::freeList()
 {
 	ListNode *currentNode = m_Head;
 	

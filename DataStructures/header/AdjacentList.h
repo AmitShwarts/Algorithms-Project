@@ -1,5 +1,6 @@
 #pragma once
-#include "../../configs.h"
+#include <iostream>
+#include <string>
 
 struct ListNode
 {
@@ -10,11 +11,13 @@ struct ListNode
 class AdjacentList
 {
   private:
+	const std::string ERROR_OUT_OF_RANGE_VERTEX_INDEX = "Invalid vertex index";
+	const std::string ERROR_EMPTY_LIST = "List is empty";
 	int m_Size;
 	ListNode *m_Head, *m_Tail;
 	ListNode *makeNewNode(int i_Vertex, int i_Weight, ListNode *io_Next = nullptr);
-	ListNode *findByIndex(int i_Index) const;
-	void clear();
+	ListNode *findByIndex(int i_VertexIndex) const;
+	void freeList();
   
   public:
 	AdjacentList() : m_Size(0), m_Head(nullptr), m_Tail(nullptr){};
