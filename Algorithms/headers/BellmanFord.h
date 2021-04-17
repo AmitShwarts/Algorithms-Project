@@ -7,7 +7,7 @@ class BellmanFord
   private:
 	int m_Size = 0;
 	int *m_pathWeightArr = nullptr;
-	int *m_lastVertexArr = nullptr;
+	
 	BellmanFord(int i_Size, int i_StartIndex);
 	void relax(int i_U, int i_V, int i_Weight);
 	bool isThereImprovingEdge(const Graph &i_Graph);
