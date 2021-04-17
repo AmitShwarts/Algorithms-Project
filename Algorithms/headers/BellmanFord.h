@@ -10,6 +10,7 @@ class BellmanFord
 	int *m_lastVertexArr = nullptr;
 	BellmanFord(int i_Size, int i_StartIndex);
 	void relax(int i_U, int i_V, int i_Weight);
+	bool isThereImprovingEdge(const Graph &i_Graph);
   
   public:
 	BellmanFord() = delete;

@@ -50,5 +50,31 @@ int BellmanFord::Execute(const Graph &i_Graph, int i_Start, int i_Target)
 		}
 	}
 	
+	if(bellmanFord.isThereImprovingEdge(i_Graph))
+	{
+		throw std::logic_error(Error::NEGATIVE_CYCLE);
+	}
+	
 	return bellmanFord.m_pathWeightArr[i_Target];
+}
+
+bool BellmanFord::isThereImprovingEdge(const Graph &i_Graph)
+{
+	// d as mention at the algorithm
+	int *d = m_pathWeightArr;
+	bool foundImproving = false;
+	
+	for(int uIndex = 1; uIndex <= i_Graph.GetSize() && !foundImproving; uIndex++)
+	{
+		auto currList = i_Graph.GetAdjList(uIndex);
+		auto currEdge = currList.Front();
+		
+		while(currEdge != nullptr && !foundImproving)
+		{
+			foundImproving = d[uIndex] != MAX_WEIGHT && d[currEdge->vertex] > d[uIndex] + currEdge->weight;
+			currEdge = currEdge->next;
+		}
+	}
+	
+	return foundImproving;
 }
