@@ -8,6 +8,8 @@
 #include <chrono>
 #include <iomanip>
 
+void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, Graph *&io_ListsGraph,
+					   int &io_startVertexIndex, int &io_targetVertexIndex);
 void executeProgram(const std::string &i_InputFileName, const std::string &i_OutputFileName);
 void readEdgesFromFile(std::ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGraph);
 void

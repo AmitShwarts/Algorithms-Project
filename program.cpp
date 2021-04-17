@@ -4,16 +4,11 @@ using namespace std;
 
 void executeProgram(const string &i_InputFileName, const string &i_OutputFileName)
 {
-	ifstream data(i_InputFileName);
-	int amountOfVertices, startVertexIndex, targetVertexIndex;
+	int startVertexIndex = 0, targetVertexIndex = 0;
+	Graph *matGraph, *listsGraph;
 	
 	// graphs init
-	data >> amountOfVertices >> startVertexIndex >> targetVertexIndex;
-	Graph *matGraph = new GraphByMat::WeightedGraph(amountOfVertices);
-	Graph *listsGraph = new GraphByLists::WeightedGraph(amountOfVertices);
-	
-	readEdgesFromFile(data, matGraph, listsGraph);
-	data.close();
+	readGraphFromFile(i_InputFileName, matGraph, listsGraph, startVertexIndex, targetVertexIndex);
 	
 	// execute algorithms and measured times
 	const int k_NumOfAlgorithms = 6;
@@ -33,6 +28,40 @@ void executeProgram(const string &i_InputFileName, const string &i_OutputFileNam
 	delete matGraph;
 	delete listsGraph;
 }
+
+void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, Graph *&io_ListsGraph,
+					   int &io_startVertexIndex, int &io_targetVertexIndex)
+{
+	ifstream data(i_InputFileName);
+	int amountOfVertices;
+	
+	try
+	{
+		data >> amountOfVertices >> io_startVertexIndex >> io_targetVertexIndex;
+	}
+	catch(std::exception &error)
+	{
+		throw std::invalid_argument(Error::INVALID_INPUT);
+	}
+	
+	io_MatGraph = new GraphByMat::WeightedGraph(amountOfVertices);
+	io_ListsGraph = new GraphByLists::WeightedGraph(amountOfVertices);
+	
+	try
+	{
+		readEdgesFromFile(data, io_MatGraph, io_ListsGraph);
+	}
+	catch(std::exception &error)
+	{
+		delete[] io_MatGraph;
+		delete[] io_ListsGraph;
+		
+		throw std::invalid_argument(Error::INVALID_INPUT);
+	}
+	
+	data.close();
+}
+
 void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGraph)
 {
 	while(!i_Data.eof())
@@ -40,6 +69,11 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 		int u, v, weight;
 		
 		i_Data >> u >> v >> weight;
+		if(weight < 0)
+		{
+			throw std::invalid_argument(Error::INVALID_INPUT);
+		}
+		
 		o_MatGraph->AddEdge(u, v, weight);
 		o_ListsGraph->AddEdge(u, v, weight);
 	}
