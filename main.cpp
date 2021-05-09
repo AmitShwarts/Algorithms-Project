@@ -1,6 +1,7 @@
 #include "program.h"
 
 void killProgram();
+
 int main(int argc, char **argv)
 {
 	// init
@@ -17,6 +18,7 @@ int main(int argc, char **argv)
 	
 	return 0;
 }
+
 void killProgram()
 {
 	std::cout << std::endl << "Invalid input" << std::endl;

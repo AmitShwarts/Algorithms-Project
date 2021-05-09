@@ -50,12 +50,12 @@ class MinHeap
 		{
 			int left = getLeft(i), right = getRight(i);
 			
-			if(isValidKey(left) && m_Arr[i].key > m_Arr[left].key)
+			if(isValidVertex(left) && m_Arr[i].key > m_Arr[left].key)
 			{
 				swap(i, left);
 				i = left;
 			}
-			else if(isValidKey(right) && m_Arr[i].key > m_Arr[right].key)
+			else if(isValidVertex(right) && m_Arr[i].key > m_Arr[right].key)
 			{
 				swap(i, right);
 				i = right;
@@ -67,9 +67,9 @@ class MinHeap
 		}
 	}
 	
-	void fixUp()
+	void fixUp(int i_I = 0)
 	{
-		int i = m_Size - 1;
+		int i = i_I == 0 ? m_Size - 1 : i_I;
 		
 		while(i > 0)
 		{
@@ -87,15 +87,15 @@ class MinHeap
 		}
 	}
 	
-	bool isValidKey(int i_Key) const
+	bool isValidVertex(int i_Vertex) const
 	{
-		return i_Key >= 0 && i_Key < m_Size;
+		return i_Vertex > 0 && i_Vertex <= m_Capacity;
 	}
   
   public:
 	MinHeap() = delete;
-	MinHeap(const MinHeap &org) = delete;
-	const MinHeap &operator=(const MinHeap &org) = delete;
+	MinHeap(const MinHeap &org) = default;
+	MinHeap &operator=(const MinHeap &org) = default;
 	
 	~MinHeap()
 	{
@@ -109,7 +109,7 @@ class MinHeap
 	{
 		m_Capacity = i_Size;
 		m_Size = 0;
-		m_Arr = new T[m_Capacity];
+		m_Arr = new Node[m_Capacity];
 		m_NeedToDeAllocate = true;
 	}
 	
@@ -119,6 +119,7 @@ class MinHeap
 		m_Arr = io_Arr;
 		m_NeedToDeAllocate = false;
 		
+		// floyd algorithm
 		for(int i = (m_Size / 2) - 1; i >= 0; i--)
 		{
 			heapify(i);
@@ -155,19 +156,19 @@ class MinHeap
 		return res;
 	}
 	
-	void DecreaseKey(int i_OldKey, int i_NewKey)
+	void DecreaseKey(int i_Vertex, int i_NewKey)
 	{
-		if(!isValidKey(i_OldKey) || !isValidKey(i_NewKey))
+		if(!isValidVertex(i_Vertex))
 		{
 			throw std::invalid_argument(ERROR_INVALID_KEY);
 		}
 		
 		for(int i = 0; i < m_Size; i++)
 		{
-			if(m_Arr[i].key == i_OldKey)
+			if(m_Arr[i].data == i_Vertex)
 			{
 				m_Arr[i].key = i_NewKey;
-				heapify(i);
+				fixUp(i);
 				break;
 			}
 		}
