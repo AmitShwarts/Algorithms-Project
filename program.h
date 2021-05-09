@@ -3,8 +3,7 @@
 #include "DataStructures/header/WeightedGraphByLists.h"
 #include "DataStructures/header/WeightedGraphByMat.h"
 #include "Algorithms/headers/BellmanFord.h"
-#include "Algorithms/headers/DijkstraHeap.h"
-#include "Algorithms/headers/DijkstraArray.h"
+#include "Algorithms/headers/Dijkstra.h"
 #include <chrono>
 #include <iomanip>
 

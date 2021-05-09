@@ -5,6 +5,7 @@
 #include <fstream>
 #include "DataStructures/header/AdjacentList.h"
 #include "DataStructures/header/MinHeap.h"
+#include "DataStructures/header/ArrayPriorityQueue.h"
 
 class Graph;
 

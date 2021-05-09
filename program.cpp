@@ -83,24 +83,27 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 		o_ListsGraph->AddEdge(u, v, weight);
 	}
 }
+
 void executeAlgorithms(const Graph &i_MatGraph, const Graph &i_ListsGraph, int i_Start, int i_Target, string *o_Output)
 {
 	cout << fixed << setprecision(9);
 	int result;
 	
-	result = executeAndMeasureTime(DijkstraHeap::Execute, i_ListsGraph, i_Start, i_Target, o_Output[0]);
+	result = executeAndMeasureTime(Dijkstra<MinHeap<int>>::Execute, i_ListsGraph, i_Start, i_Target, o_Output[0]);
 	cout << "Adjacency Dijkstra heap " << result << endl;
 	
-	result = executeAndMeasureTime(DijkstraArray::Execute, i_ListsGraph, i_Start, i_Target, o_Output[1]);
+	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<int>>::Execute, i_ListsGraph, i_Start, i_Target,
+								   o_Output[1]);
 	cout << "Adjacency Dijkstra array " << result << endl;
 	
 	result = executeAndMeasureTime(BellmanFord::Execute, i_ListsGraph, i_Start, i_Target, o_Output[2]);
 	cout << "Adjacency Bellman Ford " << result << endl;
 	
-	result = executeAndMeasureTime(DijkstraHeap::Execute, i_MatGraph, i_Start, i_Target, o_Output[3]);
+	result = executeAndMeasureTime(Dijkstra<MinHeap<int>>::Execute, i_MatGraph, i_Start, i_Target, o_Output[3]);
 	cout << "Matrix Dijkstra heap " << result << endl;
 	
-	result = executeAndMeasureTime(DijkstraArray::Execute, i_MatGraph, i_Start, i_Target, o_Output[4]);
+	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<int>>::Execute, i_MatGraph, i_Start, i_Target,
+								   o_Output[4]);
 	cout << "Matrix Dijkstra array " << result << endl;
 	
 	result = executeAndMeasureTime(BellmanFord::Execute, i_MatGraph, i_Start, i_Target, o_Output[5]);
