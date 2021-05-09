@@ -56,6 +56,7 @@ bool WeightedGraph::IsAdjacent(int i_U, int i_V) const
 	
 	return m_Vertices[i_U - 1].Find(i_V) != nullptr;
 }
+
 AdjacentList WeightedGraph::GetAdjList(int i_U) const
 {
 	if(!this->isValidVertex(i_U))
@@ -65,6 +66,7 @@ AdjacentList WeightedGraph::GetAdjList(int i_U) const
 	
 	return m_Vertices[i_U - 1];
 }
+
 void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
 {
 	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))
@@ -74,6 +76,7 @@ void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
 	
 	m_Vertices[i_U - 1].ToTail(i_V, i_Weight);
 }
+
 void WeightedGraph::RemoveEdge(int i_U, int i_V)
 {
 	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))

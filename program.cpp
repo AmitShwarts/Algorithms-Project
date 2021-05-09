@@ -10,6 +10,15 @@ void executeProgram(const string &i_InputFileName, const string &i_OutputFileNam
 	// graphs init
 	readGraphFromFile(i_InputFileName, matGraph, listsGraph, startVertexIndex, targetVertexIndex);
 	
+	bool matIsSimple = matGraph->IsGraphSimple();
+	bool listIsSimple = listsGraph->IsGraphSimple();
+	if(listIsSimple == false || matIsSimple == false)
+	{
+		delete matGraph;
+		delete listsGraph;
+		throw std::invalid_argument(Error::INVALID_INPUT);
+	}
+	
 	// execute algorithms and measured times
 	const int k_NumOfAlgorithms = 6;
 	string dataToWrite[k_NumOfAlgorithms];
@@ -41,11 +50,13 @@ void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, 
 	}
 	catch(std::exception &error)
 	{
+		data.close();
 		throw std::invalid_argument(Error::INVALID_INPUT);
 	}
 	
 	if(amountOfVertices < 0 || io_startVertexIndex < 0 || io_targetVertexIndex < 0)
 	{
+		data.close();
 		throw std::invalid_argument(Error::INVALID_INPUT);
 	}
 	
@@ -58,9 +69,9 @@ void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, 
 	}
 	catch(std::exception &error)
 	{
-		delete[] io_MatGraph;
-		delete[] io_ListsGraph;
-		
+		delete io_MatGraph;
+		delete io_ListsGraph;
+		data.close();
 		throw std::invalid_argument(Error::INVALID_INPUT);
 	}
 	
@@ -71,16 +82,27 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 {
 	while(i_Data.eof() == false)
 	{
-		int u, v, weight;
+		int u = -1, v = -1, weight = -1;
 		
-		i_Data >> u >> v >> weight;
-		if(u < 0 || v < 0 || weight < 0)
+		try
+		{
+			i_Data >> u >> v >> weight;
+		}
+		catch(std::exception &error)
 		{
 			throw std::invalid_argument(Error::INVALID_INPUT);
 		}
 		
-		o_MatGraph->AddEdge(u, v, weight);
-		o_ListsGraph->AddEdge(u, v, weight);
+		if(u != -1 && v != -1 && weight != -1)
+		{
+			if(u < 0 || v < 0 || weight < 0)
+			{
+				throw std::invalid_argument(Error::INVALID_INPUT);
+			}
+			
+			o_MatGraph->AddEdge(u, v, weight);
+			o_ListsGraph->AddEdge(u, v, weight);
+		}
 	}
 }
 

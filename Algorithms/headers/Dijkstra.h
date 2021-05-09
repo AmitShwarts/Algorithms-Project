@@ -20,16 +20,15 @@ class Dijkstra
 			m_pathWeightArr[i] = MAX_WEIGHT;
 		}
 		
-		for(int i = 0; i < m_Size; i++)
+		m_pathWeightArr[i_StartIndex] = 0;
+		for(int i = 1; i <= m_Size; i++)
 		{
 			T::Node temp;
 			
-			temp.data = i + 1;
+			temp.data = i;
 			temp.key = m_pathWeightArr[i];
 			m_Pq.Insert(temp);
 		}
-		
-		m_pathWeightArr[0] = m_pathWeightArr[i_StartIndex] = 0;
 	}
 	
 	void relax(int i_U, int i_V, int i_Weight)
