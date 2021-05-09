@@ -44,6 +44,11 @@ void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, 
 		throw std::invalid_argument(Error::INVALID_INPUT);
 	}
 	
+	if(amountOfVertices < 0 || io_startVertexIndex < 0 || io_targetVertexIndex < 0)
+	{
+		throw std::invalid_argument(Error::INVALID_INPUT);
+	}
+	
 	io_MatGraph = new GraphByMat::WeightedGraph(amountOfVertices);
 	io_ListsGraph = new GraphByLists::WeightedGraph(amountOfVertices);
 	
@@ -64,12 +69,12 @@ void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, 
 
 void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGraph)
 {
-	while(!i_Data.eof())
+	while(i_Data.eof() == false)
 	{
 		int u, v, weight;
 		
 		i_Data >> u >> v >> weight;
-		if(weight < 0)
+		if(u < 0 || v < 0 || weight < 0)
 		{
 			throw std::invalid_argument(Error::INVALID_INPUT);
 		}
