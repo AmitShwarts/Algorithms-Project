@@ -12,6 +12,7 @@ void executeProgram(const string &i_InputFileName, const string &i_OutputFileNam
 	
 	bool matIsSimple = matGraph->IsGraphSimple();
 	bool listIsSimple = listsGraph->IsGraphSimple();
+	
 	if(listIsSimple == false || matIsSimple == false)
 	{
 		delete matGraph;
@@ -22,6 +23,7 @@ void executeProgram(const string &i_InputFileName, const string &i_OutputFileNam
 	// execute algorithms and measured times
 	const int k_NumOfAlgorithms = 6;
 	string dataToWrite[k_NumOfAlgorithms];
+	
 	executeAlgorithms(*matGraph, *listsGraph, startVertexIndex, targetVertexIndex, dataToWrite);
 	
 	// write measured times to file
@@ -82,8 +84,9 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 {
 	while(i_Data.eof() == false)
 	{
-		int u = -1, v = -1, weight = -1;
+		float u = -1, v = -1, weight = -1;
 		
+		// read edge
 		try
 		{
 			i_Data >> u >> v >> weight;
@@ -93,6 +96,7 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 			throw std::invalid_argument(Error::INVALID_INPUT);
 		}
 		
+		// check if edge is valid
 		if(u != -1 && v != -1 && weight != -1)
 		{
 			if(u < 0 || v < 0 || weight < 0)
@@ -108,23 +112,22 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 
 void executeAlgorithms(const Graph &i_MatGraph, const Graph &i_ListsGraph, int i_Start, int i_Target, string *o_Output)
 {
-	cout << fixed << setprecision(9);
-	int result;
+	float result;
 	
-	result = executeAndMeasureTime(Dijkstra<MinHeap<int>>::Execute, i_ListsGraph, i_Start, i_Target, o_Output[0]);
+	result = executeAndMeasureTime(Dijkstra<MinHeap<float>>::Execute, i_ListsGraph, i_Start, i_Target, o_Output[0]);
 	cout << "Adjacency Dijkstra heap " << result << endl;
 	
-	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<int>>::Execute, i_ListsGraph, i_Start, i_Target,
+	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<float>>::Execute, i_ListsGraph, i_Start, i_Target,
 								   o_Output[1]);
 	cout << "Adjacency Dijkstra array " << result << endl;
 	
 	result = executeAndMeasureTime(BellmanFord::Execute, i_ListsGraph, i_Start, i_Target, o_Output[2]);
 	cout << "Adjacency Bellman Ford " << result << endl;
 	
-	result = executeAndMeasureTime(Dijkstra<MinHeap<int>>::Execute, i_MatGraph, i_Start, i_Target, o_Output[3]);
+	result = executeAndMeasureTime(Dijkstra<MinHeap<float>>::Execute, i_MatGraph, i_Start, i_Target, o_Output[3]);
 	cout << "Matrix Dijkstra heap " << result << endl;
 	
-	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<int>>::Execute, i_MatGraph, i_Start, i_Target,
+	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<float>>::Execute, i_MatGraph, i_Start, i_Target,
 								   o_Output[4]);
 	cout << "Matrix Dijkstra array " << result << endl;
 	

@@ -67,7 +67,7 @@ AdjacentList WeightedGraph::GetAdjList(int i_U) const
 	return m_Vertices[i_U - 1];
 }
 
-void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
+void WeightedGraph::AddEdge(int i_U, int i_V, float i_Weight)
 {
 	if(!this->isValidVertex(i_U) || !this->isValidVertex(i_V))
 	{

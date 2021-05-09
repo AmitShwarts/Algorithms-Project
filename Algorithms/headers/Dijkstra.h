@@ -7,13 +7,13 @@ class Dijkstra
 {
   private:
 	int m_Size = 0;
-	int *m_pathWeightArr = nullptr;
+	float *m_pathWeightArr = nullptr;
 	T m_Pq;
 	
 	Dijkstra(int i_Size, int i_StartIndex) : m_Pq(i_Size)
 	{
 		m_Size = i_Size;
-		m_pathWeightArr = new int[m_Size + 1];
+		m_pathWeightArr = new float[m_Size + 1];
 		
 		for(int i = 1; i <= m_Size; i++)
 		{
@@ -31,10 +31,10 @@ class Dijkstra
 		}
 	}
 	
-	void relax(int i_U, int i_V, int i_Weight)
+	void relax(int i_U, int i_V, float i_Weight)
 	{
 		// d as mention at the algorithm
-		int *d = m_pathWeightArr;
+		auto *d = m_pathWeightArr;
 		
 		if(d[i_U] != MAX_WEIGHT && d[i_V] > d[i_U] + i_Weight)
 		{
@@ -53,10 +53,12 @@ class Dijkstra
 		delete[] m_pathWeightArr;
 	}
 	
-	static int Execute(const Graph &i_Graph, int i_Start, int i_Target)
+	static float Execute(const Graph &i_Graph, int i_Start, int i_Target)
 	{
+		// algorithm init
 		Dijkstra dijkstraHeap(i_Graph.GetSize(), i_Start);
 		
+		// while there is improving edge
 		while(!dijkstraHeap.m_Pq.IsEmpty())
 		{
 			int vertexU = dijkstraHeap.m_Pq.DeleteMin();

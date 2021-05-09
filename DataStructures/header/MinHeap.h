@@ -7,8 +7,8 @@ class MinHeap
   public:
 	struct Node
 	{
-		T data;
-		int key;
+		int data;
+		T key;
 	};
   
   private:
@@ -17,6 +17,7 @@ class MinHeap
 	const std::string ERROR_INVALID_KEY = "Invalid key";
 	int m_Capacity, m_Size;
 	Node *m_Arr;
+	int *m_VerticesMap;
 	bool m_NeedToDeAllocate;
 	
 	int getParent(int i_Size) const
@@ -34,12 +35,20 @@ class MinHeap
 		return (i_Size * 2) + 2;
 	}
 	
-	void swap(int i_First, int i_Second)
+	void swapNodes(int i_First, int i_Second)
 	{
 		Node temp = m_Arr[i_First];
 		
 		m_Arr[i_First] = m_Arr[i_Second];
 		m_Arr[i_Second] = temp;
+	}
+	
+	void swapIndexs(int i_First, int i_Second)
+	{
+		int temp = m_VerticesMap[i_First];
+		
+		m_VerticesMap[i_First] = m_VerticesMap[i_Second];
+		m_VerticesMap[i_Second] = temp;
 	}
 	
 	void heapify(int i_Root = 0)
@@ -52,12 +61,14 @@ class MinHeap
 			
 			if(isValidVertex(left) && m_Arr[i].key > m_Arr[left].key)
 			{
-				swap(i, left);
+				swapIndexs(m_Arr[i].data, m_Arr[left].data);
+				swapNodes(i, left);
 				i = left;
 			}
 			else if(isValidVertex(right) && m_Arr[i].key > m_Arr[right].key)
 			{
-				swap(i, right);
+				swapIndexs(m_Arr[i].data, m_Arr[right].data);
+				swapNodes(i, right);
 				i = right;
 			}
 			else
@@ -77,7 +88,8 @@ class MinHeap
 			
 			if(m_Arr[i].key < m_Arr[parent].key)
 			{
-				swap(i, parent);
+				swapIndexs(m_Arr[i].data, m_Arr[parent].data);
+				swapNodes(i, parent);
 				i = parent;
 			}
 			else
@@ -103,6 +115,8 @@ class MinHeap
 		{
 			delete[] m_Arr;
 		}
+		
+		delete[] m_VerticesMap;
 	}
 	
 	MinHeap(int i_Size)
@@ -110,6 +124,7 @@ class MinHeap
 		m_Capacity = i_Size;
 		m_Size = 0;
 		m_Arr = new Node[m_Capacity];
+		m_VerticesMap = new int[m_Capacity + 1];
 		m_NeedToDeAllocate = true;
 		
 		for(int i = 0; i < m_Capacity; i++)
@@ -123,11 +138,19 @@ class MinHeap
 		m_Size = m_Capacity = i_Size;
 		m_Arr = io_Arr;
 		m_NeedToDeAllocate = false;
+		m_VerticesMap = new int[m_Capacity + 1];
 		
 		// floyd algorithm
 		for(int i = (m_Size / 2) - 1; i >= 0; i--)
 		{
 			heapify(i);
+		}
+		
+		for(int i = 0; i < m_Capacity; i++)
+		{
+			int currVertex = m_Arr[i].data;
+			
+			m_VerticesMap[currVertex] = i;
 		}
 	}
 	
@@ -146,16 +169,18 @@ class MinHeap
 		return m_Size == 0;
 	}
 	
-	T DeleteMin()
+	int DeleteMin()
 	{
 		if(IsEmpty())
 		{
 			throw std::out_of_range(ERROR_EMPTY_HEAP);
 		}
 		
-		T res = m_Arr[0].data;
+		int res = m_Arr[0].data;
 		
-		m_Arr[0] = m_Arr[--m_Size];
+		m_Size--;
+		swapIndexs(m_Arr[0].data, m_Arr[m_Size].data);
+		swapNodes(0, m_Size);
 		heapify();
 		
 		return res;
@@ -168,15 +193,10 @@ class MinHeap
 			throw std::invalid_argument(ERROR_INVALID_KEY);
 		}
 		
-		for(int i = 0; i < m_Size; i++)
-		{
-			if(m_Arr[i].data == i_Vertex)
-			{
-				m_Arr[i].key = i_NewKey;
-				fixUp(i);
-				break;
-			}
-		}
+		int index = m_VerticesMap[i_Vertex];
+		
+		m_Arr[index].key = i_NewKey;
+		fixUp(index);
 	}
 	
 	int GetSize() const
@@ -191,7 +211,10 @@ class MinHeap
 			throw std::out_of_range(ERROR_FULL_HEAP);
 		}
 		
-		m_Arr[m_Size++] = i_NewNode;
+		m_Arr[m_Size].data = i_NewNode.data;
+		m_Arr[m_Size].key = i_NewNode.key;
+		m_VerticesMap[i_NewNode.data] = m_Size;
+		m_Size++;
 		fixUp();
 	}
 };

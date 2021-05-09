@@ -7,8 +7,8 @@ class ArrayPriorityQueue
   public:
 	struct Node
 	{
-		T data;
-		int key;
+		int data;
+		T key;
 	};
   
   private:
@@ -57,15 +57,15 @@ class ArrayPriorityQueue
 		return m_Size == 0;
 	}
 	
-	T DeleteMin()
+	int DeleteMin()
 	{
 		if(IsEmpty())
 		{
 			throw std::out_of_range(ERROR_EMPTY);
 		}
 		
-		T minVertex = m_Arr[0].data;
-		int minKey = m_Arr[0].key;
+		int minVertex = m_Arr[0].data;
+		T minKey = m_Arr[0].key;
 		
 		for(int i = 1; i < m_Capacity; i++)
 		{
@@ -83,7 +83,7 @@ class ArrayPriorityQueue
 		return minVertex;
 	}
 	
-	void DecreaseKey(int i_Vertex, int i_NewKey)
+	void DecreaseKey(int i_Vertex, T i_NewKey)
 	{
 		if(!isValidVertex(i_Vertex))
 		{

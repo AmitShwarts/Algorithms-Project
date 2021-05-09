@@ -10,11 +10,11 @@ WeightedGraph::WeightedGraph(int i_Size)
 	}
 	
 	m_Size = i_Size;
-	m_AdjMat = new int *[m_Size];
+	m_AdjMat = new float *[m_Size];
 	
 	for(int i = 0; i < m_Size; i++)
 	{
-		m_AdjMat[i] = new int[m_Size];
+		m_AdjMat[i] = new float[m_Size];
 		
 		for(int j = 0; j < m_Size; j++)
 		{
@@ -50,7 +50,8 @@ AdjacentList WeightedGraph::GetAdjList(int i_U) const
 	
 	return resultList;
 }
-void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
+
+void WeightedGraph::AddEdge(int i_U, int i_V, float i_Weight)
 {
 	if(!isValidVertex(i_U) || !isValidVertex(i_V))
 	{
@@ -59,6 +60,7 @@ void WeightedGraph::AddEdge(int i_U, int i_V, int i_Weight)
 	
 	m_AdjMat[i_U - 1][i_V - 1] = i_Weight;
 }
+
 void WeightedGraph::RemoveEdge(int i_U, int i_V)
 {
 	if(!isValidVertex(i_U) || !isValidVertex(i_V))
@@ -94,11 +96,11 @@ const WeightedGraph &WeightedGraph::operator=(const WeightedGraph &org)
 		
 		// copy data
 		m_Size = org.m_Size;
-		m_AdjMat = new int *[m_Size];
+		m_AdjMat = new float *[m_Size];
 		
 		for(int i = 0; i < m_Size; i++)
 		{
-			m_AdjMat[i] = new int[m_Size];
+			m_AdjMat[i] = new float[m_Size];
 			
 			for(int j = 0; j < m_Size; j++)
 			{

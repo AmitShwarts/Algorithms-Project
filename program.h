@@ -13,13 +13,14 @@ void executeProgram(const std::string &i_InputFileName, const std::string &i_Out
 void readEdgesFromFile(std::ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGraph);
 void
 executeAlgorithms(const Graph &i_MatGraph, const Graph &i_ListsGraph, int i_Start, int i_Target, std::string *o_Output);
+
 template<typename F>
-int executeAndMeasureTime(F i_Func, const Graph &i_ListsGraph, int i_Start, int i_Target, std::string &o_Output)
+float executeAndMeasureTime(F i_Func, const Graph &i_ListsGraph, int i_Start, int i_Target, std::string &o_Output)
 {
 	auto start = std::chrono::high_resolution_clock::now();
 	std::ios_base::sync_with_stdio(false);
 	
-	int res = i_Func(i_ListsGraph, i_Start, i_Target);
+	float res = i_Func(i_ListsGraph, i_Start, i_Target);
 	auto end = std::chrono::high_resolution_clock::now();
 	double timeTaken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 	timeTaken *= 1e-9;

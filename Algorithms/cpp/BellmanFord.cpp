@@ -3,20 +3,20 @@
 BellmanFord::BellmanFord(int i_Size, int i_StartIndex)
 {
 	m_Size = i_Size;
-	m_pathWeightArr = new int[m_Size + 1];
+	m_pathWeightArr = new float[m_Size + 1];
 	
 	for(int i = 1; i <= m_Size; i++)
 	{
 		m_pathWeightArr[i] = MAX_WEIGHT;
 	}
 	
-	m_pathWeightArr[0] = m_pathWeightArr[i_StartIndex] = 0;
+	m_pathWeightArr[i_StartIndex] = 0;
 }
 
-void BellmanFord::relax(int i_U, int i_V, int i_Weight)
+void BellmanFord::relax(int i_U, int i_V, float i_Weight)
 {
 	// d as mention at the algorithm
-	int *d = m_pathWeightArr;
+	auto *d = m_pathWeightArr;
 	
 	if(d[i_U] != MAX_WEIGHT && d[i_V] > d[i_U] + i_Weight)
 	{
@@ -29,7 +29,7 @@ BellmanFord::~BellmanFord()
 	delete[] m_pathWeightArr;
 }
 
-int BellmanFord::Execute(const Graph &i_Graph, int i_Start, int i_Target)
+float BellmanFord::Execute(const Graph &i_Graph, int i_Start, int i_Target)
 {
 	BellmanFord bellmanFord(i_Graph.GetSize(), i_Start);
 	
@@ -59,7 +59,7 @@ int BellmanFord::Execute(const Graph &i_Graph, int i_Start, int i_Target)
 bool BellmanFord::isThereImprovingEdge(const Graph &i_Graph)
 {
 	// d as mention at the algorithm
-	int *d = m_pathWeightArr;
+	auto *d = m_pathWeightArr;
 	bool foundImproving = false;
 	
 	for(int uIndex = 1; uIndex <= i_Graph.GetSize() && !foundImproving; uIndex++)
