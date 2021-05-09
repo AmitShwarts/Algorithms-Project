@@ -46,7 +46,7 @@ class MinHeap
 	{
 		int i = i_Root;
 		
-		while(i < m_Size)
+		while(i < m_Capacity / 2)
 		{
 			int left = getLeft(i), right = getRight(i);
 			
@@ -111,6 +111,11 @@ class MinHeap
 		m_Size = 0;
 		m_Arr = new Node[m_Capacity];
 		m_NeedToDeAllocate = true;
+		
+		for(int i = 0; i < m_Capacity; i++)
+		{
+			m_Arr[i].key = INT_MAX;
+		}
 	}
 	
 	MinHeap(Node *io_Arr, int i_Size)
