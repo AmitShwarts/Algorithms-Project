@@ -55,7 +55,7 @@ class MinHeap
 	{
 		int i = i_Root;
 		
-		while(i < m_Capacity / 2)
+		while(i < m_Capacity)
 		{
 			int left = getLeft(i), right = getRight(i);
 			
@@ -101,7 +101,7 @@ class MinHeap
 	
 	bool isValidVertex(int i_Vertex) const
 	{
-		return i_Vertex > 0 && i_Vertex <= m_Capacity;
+		return i_Vertex > 0 && i_Vertex < m_Size;
 	}
   
   public:
@@ -188,7 +188,7 @@ class MinHeap
 	
 	void DecreaseKey(int i_Vertex, int i_NewKey)
 	{
-		if(!isValidVertex(i_Vertex))
+		if(!(i_Vertex > 0 && i_Vertex <= m_Capacity))
 		{
 			throw std::invalid_argument(ERROR_INVALID_KEY);
 		}
