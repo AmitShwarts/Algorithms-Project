@@ -5,8 +5,14 @@
 class BellmanFord
 {
   private:
+	struct Node
+	{
+		float weight;
+		bool isInfinity;
+	};
+	
 	int m_Size = 0;
-	float *m_pathWeightArr = nullptr;
+	Node *m_pathWeightArr = nullptr;
 	
 	BellmanFord(int i_Size, int i_StartIndex);
 	void relax(int i_U, int i_V, float i_Weight);

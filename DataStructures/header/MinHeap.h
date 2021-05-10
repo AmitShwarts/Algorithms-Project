@@ -9,6 +9,15 @@ class MinHeap
 	{
 		int data;
 		T key;
+		bool isInfinity;
+		
+		bool operator<(const Node &other) const
+		{
+			bool case1 = isInfinity == false && other.isInfinity == true;
+			bool case2 = isInfinity == false && other.isInfinity == false && key < other.key;
+			
+			return case1 || case2;
+		}
 	};
   
   private:
@@ -59,13 +68,13 @@ class MinHeap
 		{
 			int left = getLeft(i), right = getRight(i);
 			
-			if(isValidVertex(left) && m_Arr[i].key > m_Arr[left].key)
+			if(isValidVertex(left) && m_Arr[left] < m_Arr[i])
 			{
 				swapIndexs(m_Arr[i].data, m_Arr[left].data);
 				swapNodes(i, left);
 				i = left;
 			}
-			else if(isValidVertex(right) && m_Arr[i].key > m_Arr[right].key)
+			else if(isValidVertex(right) && m_Arr[right] < m_Arr[i])
 			{
 				swapIndexs(m_Arr[i].data, m_Arr[right].data);
 				swapNodes(i, right);
@@ -86,7 +95,7 @@ class MinHeap
 		{
 			int parent = getParent(i);
 			
-			if(m_Arr[i].key < m_Arr[parent].key)
+			if(m_Arr[i] < m_Arr[parent])
 			{
 				swapIndexs(m_Arr[i].data, m_Arr[parent].data);
 				swapNodes(i, parent);
@@ -129,7 +138,7 @@ class MinHeap
 		
 		for(int i = 0; i < m_Capacity; i++)
 		{
-			m_Arr[i].key = INT_MAX;
+			m_Arr[i].isInfinity = true;
 		}
 	}
 	
@@ -196,6 +205,7 @@ class MinHeap
 		int index = m_VerticesMap[i_Vertex];
 		
 		m_Arr[index].key = i_NewKey;
+		m_Arr[index].isInfinity = false;
 		fixUp(index);
 	}
 	
@@ -213,6 +223,7 @@ class MinHeap
 		
 		m_Arr[m_Size].data = i_NewNode.data;
 		m_Arr[m_Size].key = i_NewNode.key;
+		m_Arr[m_Size].isInfinity = i_NewNode.isInfinity;
 		m_VerticesMap[i_NewNode.data] = m_Size;
 		m_Size++;
 		fixUp();

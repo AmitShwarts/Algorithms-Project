@@ -6,27 +6,36 @@ template<class T>
 class Dijkstra
 {
   private:
+	struct Node
+	{
+		float weight;
+		bool isInfinity;
+	};
+	
 	int m_Size = 0;
-	float *m_pathWeightArr = nullptr;
+	Node *m_pathWeightArr = nullptr;
 	T m_Pq;
 	
 	Dijkstra(int i_Size, int i_StartIndex) : m_Pq(i_Size)
 	{
 		m_Size = i_Size;
-		m_pathWeightArr = new float[m_Size + 1];
+		m_pathWeightArr = new Node[m_Size + 1];
 		
 		for(int i = 1; i <= m_Size; i++)
 		{
-			m_pathWeightArr[i] = MAX_WEIGHT;
+			m_pathWeightArr[i].weight = MAX_WEIGHT;
+			m_pathWeightArr[i].isInfinity = true;
 		}
 		
-		m_pathWeightArr[i_StartIndex] = 0;
+		m_pathWeightArr[i_StartIndex].weight = 0;
+		m_pathWeightArr[i_StartIndex].isInfinity = false;
 		for(int i = 1; i <= m_Size; i++)
 		{
 			T::Node temp;
 			
 			temp.data = i;
-			temp.key = m_pathWeightArr[i];
+			temp.key = m_pathWeightArr[i].weight;
+			temp.isInfinity = m_pathWeightArr[i].isInfinity;
 			m_Pq.Insert(temp);
 		}
 	}
@@ -36,10 +45,14 @@ class Dijkstra
 		// d as mention at the algorithm
 		auto *d = m_pathWeightArr;
 		
-		if(d[i_U] != MAX_WEIGHT && d[i_V] > d[i_U] + i_Weight)
+		if(d[i_U].isInfinity == false)
 		{
-			d[i_V] = d[i_U] + i_Weight;
-			m_Pq.DecreaseKey(i_V, d[i_V]);
+			if(d[i_V].isInfinity == true || d[i_V].weight > d[i_U].weight + i_Weight)
+			{
+				d[i_V].weight = d[i_U].weight + i_Weight;
+				d[i_V].isInfinity = false;
+				m_Pq.DecreaseKey(i_V, d[i_V].weight);
+			}
 		}
 	}
   
@@ -72,6 +85,6 @@ class Dijkstra
 			}
 		}
 		
-		return dijkstraHeap.m_pathWeightArr[i_Target];
+		return dijkstraHeap.m_pathWeightArr[i_Target].weight;
 	}
 };

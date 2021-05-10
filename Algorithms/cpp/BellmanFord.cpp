@@ -3,14 +3,15 @@
 BellmanFord::BellmanFord(int i_Size, int i_StartIndex)
 {
 	m_Size = i_Size;
-	m_pathWeightArr = new float[m_Size + 1];
+	m_pathWeightArr = new Node[m_Size + 1];
 	
 	for(int i = 1; i <= m_Size; i++)
 	{
-		m_pathWeightArr[i] = MAX_WEIGHT;
+		m_pathWeightArr[i].isInfinity = true;
 	}
 	
-	m_pathWeightArr[i_StartIndex] = 0;
+	m_pathWeightArr[i_StartIndex].weight = 0;
+	m_pathWeightArr[i_StartIndex].isInfinity = false;
 }
 
 void BellmanFord::relax(int i_U, int i_V, float i_Weight)
@@ -18,9 +19,13 @@ void BellmanFord::relax(int i_U, int i_V, float i_Weight)
 	// d as mention at the algorithm
 	auto *d = m_pathWeightArr;
 	
-	if(d[i_U] != MAX_WEIGHT && d[i_V] > d[i_U] + i_Weight)
+	if(d[i_U].isInfinity == false)
 	{
-		d[i_V] = d[i_U] + i_Weight;
+		if(d[i_V].isInfinity == true || d[i_V].weight > d[i_U].weight + i_Weight)
+		{
+			d[i_V].weight = d[i_U].weight + i_Weight;
+			d[i_V].isInfinity = false;
+		}
 	}
 }
 
@@ -53,7 +58,7 @@ float BellmanFord::Execute(const Graph &i_Graph, int i_Start, int i_Target)
 		throw std::logic_error(Error::NEGATIVE_CYCLE);
 	}
 	
-	return bellmanFord.m_pathWeightArr[i_Target];
+	return bellmanFord.m_pathWeightArr[i_Target].weight;
 }
 
 bool BellmanFord::isThereImprovingEdge(const Graph &i_Graph)
@@ -69,7 +74,11 @@ bool BellmanFord::isThereImprovingEdge(const Graph &i_Graph)
 		
 		while(currEdge != nullptr && !foundImproving)
 		{
-			foundImproving = d[uIndex] != MAX_WEIGHT && d[currEdge->vertex] > d[uIndex] + currEdge->weight;
+			bool case1 = d[uIndex].isInfinity == false;
+			bool case2 = d[currEdge->vertex].isInfinity == true ||
+						 d[currEdge->vertex].weight > d[uIndex].weight + currEdge->weight;
+			
+			foundImproving = case1 && case2;
 			currEdge = currEdge->next;
 		}
 	}

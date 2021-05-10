@@ -9,6 +9,15 @@ class ArrayPriorityQueue
 	{
 		int data;
 		T key;
+		bool isInfinity;
+		
+		bool operator<(const Node &other) const
+		{
+			bool case1 = isInfinity == false && other.isInfinity == true;
+			bool case2 = isInfinity == false && other.isInfinity == false && key < other.key;
+			
+			return case1 || case2;
+		}
 	};
   
   private:
@@ -48,7 +57,8 @@ class ArrayPriorityQueue
 		for(int i = 0; i < m_Capacity; i++)
 		{
 			m_Arr[i].data = i;
-			m_Arr[i].key = INT_MAX;
+			m_Arr[i].key = 0;
+			m_Arr[i].isInfinity = true;
 		}
 	}
 	
@@ -64,23 +74,20 @@ class ArrayPriorityQueue
 			throw std::out_of_range(ERROR_EMPTY);
 		}
 		
-		int minVertex = m_Arr[0].data;
-		T minKey = m_Arr[0].key;
+		Node *minVertex = &m_Arr[0];
 		
 		for(int i = 1; i < m_Capacity; i++)
 		{
-			if(m_Arr[i].key < minKey)
+			if(m_Arr[i] < *minVertex)
 			{
-				minKey = m_Arr[i].key;
-				minVertex = i;
+				minVertex = &m_Arr[i];
 			}
 		}
 		
 		m_Size--;
-		m_Arr[minVertex].data = m_Capacity + 1;
-		m_Arr[minVertex].key = INT_MAX;
+		minVertex->isInfinity = true;
 		
-		return minVertex;
+		return minVertex->data;
 	}
 	
 	void DecreaseKey(int i_Vertex, T i_NewKey)
@@ -91,6 +98,7 @@ class ArrayPriorityQueue
 		}
 		
 		m_Arr[i_Vertex].key = i_NewKey;
+		m_Arr[i_Vertex].isInfinity = false;
 	}
 	
 	int GetSize() const
@@ -112,6 +120,7 @@ class ArrayPriorityQueue
 		
 		m_Arr[i_NewNode.data].data = i_NewNode.data;
 		m_Arr[i_NewNode.data].key = i_NewNode.key;
+		m_Arr[i_NewNode.data].isInfinity = i_NewNode.isInfinity;
 		m_Size++;
 	}
 };

@@ -9,7 +9,7 @@
 
 class Graph;
 
-constexpr float MAX_WEIGHT = INT_MAX;
+constexpr float MAX_WEIGHT = -1;
 
 namespace Error
 {
