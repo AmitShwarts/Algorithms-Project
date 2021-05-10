@@ -33,10 +33,6 @@ float executeAndMeasureTime(F i_Func, const Graph &i_ListsGraph, int i_Start, in
 	timeTaken *= 1e-9;
 	
 	// write the measured time
-	char buffer[100], format[] = "%0.9f";
-	
-	sprintf(buffer, format, timeTaken);
-	
 	io_OutputFile << std::setprecision(9);
 	io_OutputFile << i_CurrAlgo << std::fixed << " " << timeTaken;
 	io_OutputFile << " sec" << std::endl;

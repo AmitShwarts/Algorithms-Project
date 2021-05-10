@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 
 void killProgram()
 {
-	std::cout << std::endl << "Invalid input" << std::endl;
+	std::cout << "Invalid input" << std::endl;
 	exit(1);
 }
 

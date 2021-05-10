@@ -31,7 +31,7 @@ class MinHeap
 	
 	int getParent(int i_Size) const
 	{
-		return i_Size / 2;
+		return (i_Size - 1) / 2;
 	}
 	
 	int getLeft(int i_Size) const
@@ -60,30 +60,30 @@ class MinHeap
 		m_VerticesMap[i_Second] = temp;
 	}
 	
+	void swap(int i_First, int i_Second)
+	{
+		swapIndexs(i_First, i_Second);
+		swapNodes(m_VerticesMap[i_First], m_VerticesMap[i_Second]);
+	}
+	
 	void heapify(int i_Root = 0)
 	{
-		int i = i_Root;
+		int left = getLeft(i_Root), right = getRight(i_Root), min = i_Root;
 		
-		while(i < m_Capacity)
+		if(isValidVertex(left) && m_Arr[left] < m_Arr[i_Root])
 		{
-			int left = getLeft(i), right = getRight(i);
-			
-			if(isValidVertex(left) && m_Arr[left] < m_Arr[i])
-			{
-				swapIndexs(m_Arr[i].data, m_Arr[left].data);
-				swapNodes(i, left);
-				i = left;
-			}
-			else if(isValidVertex(right) && m_Arr[right] < m_Arr[i])
-			{
-				swapIndexs(m_Arr[i].data, m_Arr[right].data);
-				swapNodes(i, right);
-				i = right;
-			}
-			else
-			{
-				break;
-			}
+			min = left;
+		}
+		
+		if(isValidVertex(right) && m_Arr[right] < m_Arr[min])
+		{
+			min = right;
+		}
+		
+		if(min != i_Root)
+		{
+			swap(m_Arr[i_Root].data, m_Arr[min].data);
+			heapify(min);
 		}
 	}
 	
@@ -97,8 +97,7 @@ class MinHeap
 			
 			if(m_Arr[i] < m_Arr[parent])
 			{
-				swapIndexs(m_Arr[i].data, m_Arr[parent].data);
-				swapNodes(i, parent);
+				swap(m_Arr[i].data, m_Arr[parent].data);
 				i = parent;
 			}
 			else
@@ -155,7 +154,7 @@ class MinHeap
 			heapify(i);
 		}
 		
-		for(int i = 0; i < m_Capacity; i++)
+		for(int i = 1; i <= m_Capacity; i++)
 		{
 			int currVertex = m_Arr[i].data;
 			
@@ -186,10 +185,10 @@ class MinHeap
 		}
 		
 		int res = m_Arr[0].data;
+		m_Arr[0].isInfinity = true;
 		
 		m_Size--;
-		swapIndexs(m_Arr[0].data, m_Arr[m_Size].data);
-		swapNodes(0, m_Size);
+		swap(m_Arr[0].data, m_Arr[m_Size].data);
 		heapify();
 		
 		return res;

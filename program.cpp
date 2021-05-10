@@ -44,7 +44,11 @@ void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, 
 		throw std::invalid_argument(Error::INVALID_INPUT);
 	}
 	
-	if(amountOfVertices < 0 || io_startVertexIndex < 0 || io_targetVertexIndex < 0)
+	bool errorCase1 = amountOfVertices <= 0 || io_startVertexIndex < 0 || io_targetVertexIndex < 0;
+	bool errorCase2 =
+			amountOfVertices > 0 && (io_startVertexIndex > amountOfVertices || io_targetVertexIndex > amountOfVertices);
+	
+	if(errorCase1 || errorCase2)
 	{
 		data.close();
 		throw std::invalid_argument(Error::INVALID_INPUT);
@@ -52,7 +56,6 @@ void readGraphFromFile(const std::string &i_InputFileName, Graph *&io_MatGraph, 
 	
 	io_MatGraph = new GraphByMat::WeightedGraph(amountOfVertices);
 	io_ListsGraph = new GraphByLists::WeightedGraph(amountOfVertices);
-	
 	try
 	{
 		readEdgesFromFile(data, io_MatGraph, io_ListsGraph);
@@ -73,6 +76,13 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 	while(i_Data.eof() == false)
 	{
 		float u = -1, v = -1, weight = -1;
+		char tempPeek = i_Data.peek();
+		
+		// ignore empty lines
+		if(tempPeek == '\n')
+		{
+			i_Data.get();
+		}
 		
 		// read edge
 		try
@@ -87,7 +97,10 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 		// check if edge is valid
 		if(u != -1 && v != -1 && weight != -1)
 		{
-			if(u < 0 || v < 0 || weight < 0)
+			bool errCase1 = u <= 0 || v <= 0 || weight < 0;
+			bool errCase2 = errCase1 == false && (u > o_ListsGraph->GetSize() || u > o_ListsGraph->GetSize());
+			
+			if(errCase1 || errCase2)
 			{
 				throw std::invalid_argument(Error::INVALID_INPUT);
 			}
@@ -138,6 +151,7 @@ void executeAlgorithms(const Graph &i_MatGraph, const Graph &i_ListsGraph, int i
 
 void printRes(float i_Result, std::string i_Str)
 {
+	cout << std::setprecision(9);
 	cout << i_Str << " ";
 	if(i_Result == MAX_WEIGHT)
 	{
