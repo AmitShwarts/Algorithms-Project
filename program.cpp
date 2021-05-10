@@ -21,20 +21,8 @@ void executeProgram(const string &i_InputFileName, const string &i_OutputFileNam
 	}
 	
 	// execute algorithms and measured times
-	const int k_NumOfAlgorithms = 6;
-	string dataToWrite[k_NumOfAlgorithms];
+	executeAlgorithms(*matGraph, *listsGraph, startVertexIndex, targetVertexIndex, i_OutputFileName);
 	
-	executeAlgorithms(*matGraph, *listsGraph, startVertexIndex, targetVertexIndex, dataToWrite);
-	
-	// write measured times to file
-	ofstream outputFile(i_OutputFileName);
-	
-	for(int i = 0; i < k_NumOfAlgorithms; i++)
-	{
-		outputFile << dataToWrite[i] << endl;
-	}
-	
-	outputFile.close();
 	// free memory
 	delete matGraph;
 	delete listsGraph;
@@ -110,30 +98,42 @@ void readEdgesFromFile(ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGrap
 	}
 }
 
-void executeAlgorithms(const Graph &i_MatGraph, const Graph &i_ListsGraph, int i_Start, int i_Target, string *o_Output)
+void executeAlgorithms(const Graph &i_MatGraph, const Graph &i_ListsGraph, int i_Start, int i_Target,
+					   const std::string &i_OutputFileName)
 {
 	float result;
-	string noPath = "There is no path";
+	string noPath = "There is no path", currAlgo;
+	ofstream outputFile(i_OutputFileName);
 	
-	result = executeAndMeasureTime(Dijkstra<MinHeap<float>>::Execute, i_ListsGraph, i_Start, i_Target, o_Output[0]);
-	printRes(result, "Adjacency Dijkstra heap");
+	currAlgo = "Adjacency Dijkstra heap";
+	result = executeAndMeasureTime(Dijkstra<MinHeap<float>>::Execute, i_ListsGraph, i_Start, i_Target, outputFile,
+								   currAlgo);
+	printRes(result, currAlgo);
 	
+	currAlgo = "Adjacency Dijkstra array";
 	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<float>>::Execute, i_ListsGraph, i_Start, i_Target,
-								   o_Output[1]);
-	printRes(result, "Adjacency Dijkstra array");
+								   outputFile, currAlgo);
+	printRes(result, currAlgo);
 	
-	result = executeAndMeasureTime(BellmanFord::Execute, i_ListsGraph, i_Start, i_Target, o_Output[2]);
-	printRes(result, "Adjacency Bellman Ford");
+	currAlgo = "Adjacency Bellman Ford";
+	result = executeAndMeasureTime(BellmanFord::Execute, i_ListsGraph, i_Start, i_Target, outputFile, currAlgo);
+	printRes(result, currAlgo);
 	
-	result = executeAndMeasureTime(Dijkstra<MinHeap<float>>::Execute, i_MatGraph, i_Start, i_Target, o_Output[3]);
-	printRes(result, "Matrix Dijkstra heap");
+	currAlgo = "Matrix Dijkstra heap";
+	result = executeAndMeasureTime(Dijkstra<MinHeap<float>>::Execute, i_MatGraph, i_Start, i_Target, outputFile,
+								   currAlgo);
+	printRes(result, currAlgo);
 	
+	currAlgo = "Matrix Dijkstra array";
 	result = executeAndMeasureTime(Dijkstra<ArrayPriorityQueue<float>>::Execute, i_MatGraph, i_Start, i_Target,
-								   o_Output[4]);
-	printRes(result, "Matrix Dijkstra array");
+								   outputFile, currAlgo);
+	printRes(result, currAlgo);
 	
-	result = executeAndMeasureTime(BellmanFord::Execute, i_MatGraph, i_Start, i_Target, o_Output[5]);
-	printRes(result, "Matrix Bellman Ford");
+	currAlgo = "Matrix Bellman Ford";
+	result = executeAndMeasureTime(BellmanFord::Execute, i_MatGraph, i_Start, i_Target, outputFile, currAlgo);
+	printRes(result, currAlgo);
+	
+	outputFile.close();
 }
 
 void printRes(float i_Result, std::string i_Str)
