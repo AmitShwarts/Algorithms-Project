@@ -13,6 +13,7 @@ void executeProgram(const std::string &i_InputFileName, const std::string &i_Out
 void readEdgesFromFile(std::ifstream &i_Data, Graph *&o_MatGraph, Graph *&o_ListsGraph);
 void
 executeAlgorithms(const Graph &i_MatGraph, const Graph &i_ListsGraph, int i_Start, int i_Target, std::string *o_Output);
+void printRes(float i_Result, std::string i_Str);
 
 template<typename F>
 float executeAndMeasureTime(F i_Func, const Graph &i_ListsGraph, int i_Start, int i_Target, std::string &o_Output)

@@ -7,6 +7,7 @@ BellmanFord::BellmanFord(int i_Size, int i_StartIndex)
 	
 	for(int i = 1; i <= m_Size; i++)
 	{
+		m_pathWeightArr[i].weight = MAX_WEIGHT;
 		m_pathWeightArr[i].isInfinity = true;
 	}
 	

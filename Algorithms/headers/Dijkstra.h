@@ -75,6 +75,12 @@ class Dijkstra
 		while(!dijkstraHeap.m_Pq.IsEmpty())
 		{
 			int vertexU = dijkstraHeap.m_Pq.DeleteMin();
+			
+			if(dijkstraHeap.m_pathWeightArr[vertexU].isInfinity == true)
+			{
+				// There is no path
+				break;
+			}
 			auto currList = i_Graph.GetAdjList(vertexU);
 			auto currEdge = currList.Front();
 			

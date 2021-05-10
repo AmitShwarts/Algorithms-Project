@@ -74,7 +74,7 @@ class ArrayPriorityQueue
 			throw std::out_of_range(ERROR_EMPTY);
 		}
 		
-		Node *minVertex = &m_Arr[0];
+		Node *minVertex = &m_Arr[1];
 		
 		for(int i = 1; i < m_Capacity; i++)
 		{
